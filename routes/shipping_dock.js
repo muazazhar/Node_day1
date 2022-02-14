@@ -1,23 +1,67 @@
 var express = require("express");
 var router = express.Router();
+var db = require("../models");
 
-router.get("/", function (req, res, next) {
-  res.send("respond with a shipping resource");
+router.get("/", async (req, res, next) => {
+  try {
+    const data = await db.shipping_dock.findAll();
+    res.json(data);
+  } catch (error) {
+    console.log(error);
+  }
 });
 
 router
   .route("/:id")
-  .get(function (req, res, next) {
-    res.send(`return shipping id : ${req.params.id}`);
+  .get(async function (req, res, next) {
+    let id = Number(req.params.id);
+    try {
+      const result = await db.shipping_dock.findAll({
+        where: {
+          id: id,
+        },
+      });
+      res.json(result);
+    } catch (error) {
+      console.log(error);
+    }
   })
-  .post(function (req, res, next) {
-    res.send(`posted shipping id : ${req.params.id}`);
+  .post(async function (req, res, next) {
+    let id = Number(req.params.id);
+    let data = req.body;
+    try {
+      const result = await db.shipping_dock.create({ ...data, id });
+      res.json(result);
+    } catch (error) {
+      console.log(error);
+    }
   })
-  .put(function (req, res, next) {
-    res.send(`updated shipping id : ${req.params.id}`);
+  .put(async function (req, res, next) {
+    let id = Number(req.params.id);
+    let data = req.body;
+    try {
+      const result = await db.shipping_dock.update(data, {
+        where: {
+          id,
+        },
+      });
+      res.json({ id, data });
+    } catch (error) {
+      console.log(error);
+    }
   })
-  .delete(function (req, res, next) {
-    res.send(`deleted shipping id : ${req.params.id}`);
+  .delete(async function (req, res, next) {
+    let id = req.params.id;
+    try {
+      const result = await db.shipping_dock.destroy({
+        where: {
+          id,
+        },
+      });
+      res.send(`entry with id: ${id} deleted`);
+    } catch (error) {
+      console.log(error);
+    }
   });
 
 module.exports = router;
