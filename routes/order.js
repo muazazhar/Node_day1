@@ -15,11 +15,7 @@ router
   .get(async function (req, res, next) {
     let id = Number(req.params.id);
     try {
-      const result = await db.order.findAll({
-        where: {
-          id: id,
-        },
-      });
+      const result = await db.order.findByPk(id);
       res.json(result);
     } catch (error) {
       console.log(error);

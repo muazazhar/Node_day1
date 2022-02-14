@@ -16,11 +16,7 @@ router
   .get(async function (req, res, next) {
     let id = Number(req.params.id);
     try {
-      const result = await db.shipping_dock.findAll({
-        where: {
-          id: id,
-        },
-      });
+      const result = await db.shipping_dock.findByPk(id);
       res.json(result);
     } catch (error) {
       console.log(error);
