@@ -20,4 +20,5 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.ENUM("paid", "not_paid"),
     },
   });
+  return order;
 };
